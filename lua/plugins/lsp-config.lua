@@ -1,4 +1,5 @@
 return {
+
 	{
 		"williamboman/mason.nvim",
 		config = function()
@@ -9,14 +10,16 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls" },
+				ensure_installed = { "lua_ls", "pyright", "clangd" },
 			})
 		end,
 	},
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
 			vim.lsp.config("lua_ls", {
+        capabilities = capabilities,
 				cmd = { "lua-language-server" },
 				filetypes = { "lua" },
 				root_markers = {
@@ -32,7 +35,8 @@ return {
 			})
 
 			vim.lsp.config("pyright", {
-				cmd = { "pyright" },
+        capabilities = capabilities,
+				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
 				root_markers = {
 					"pyproject.toml",
@@ -40,15 +44,15 @@ return {
 				},
 			})
 
-      vim.lsp.config("clangd", {
-        cmd = { "clangd" },
-        filetypes = { "c" },
-        root_markers = {
-          "pyproject.toml",
-          ".git",
-        },
-      })
-
+			vim.lsp.config("clangd", {
+        capabilities = capabilities,
+				cmd = { "clangd" },
+				filetypes = { "c" },
+				root_markers = {
+					"pyproject.toml",
+					".git",
+				},
+			})
 
 			vim.lsp.enable({ "lua_ls", "pyright", "clangd" })
 

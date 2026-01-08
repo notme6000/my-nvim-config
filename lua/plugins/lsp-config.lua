@@ -10,7 +10,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "pyright", "clangd" },
+				ensure_installed = { "lua_ls", "pyright", "clangd", "gopls" },
 			})
 		end,
 	},
@@ -54,7 +54,18 @@ return {
 				},
 			})
 
-			vim.lsp.enable({ "lua_ls", "pyright", "clangd" })
+			vim.lsp.config("gopls", {
+        capabilities = capabilities,
+				cmd = { "gopls" },
+				filetypes = { "go" },
+				root_markers = {
+					"go.mod",
+          "go.sum",
+					".git",
+				},
+			})
+
+			vim.lsp.enable({ "lua_ls", "pyright", "clangd", "gopls" })
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})

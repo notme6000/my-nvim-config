@@ -21,6 +21,17 @@ return {
 			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
+        -- new line added for completion
+        completion = {
+          autocomplete = {
+            cmp.TriggerEvent.TextChanged,
+            cmp.TriggerEvent.InsertEnter,
+          },
+          keyword_length = 1,
+        },
+
+        -- ends here 
+
 				snippet = {
 					expand = function(args)
 						require("luasnip").lsp_expand(args.body)
@@ -40,6 +51,7 @@ return {
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
 				}),
 				sources = cmp.config.sources({
+					{ name = "nvim_lsp" }, -- added this line too
 					{ name = "luasnip" },
 					{ name = "buffer" },
 					{ name = "path" },

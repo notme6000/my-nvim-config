@@ -17,9 +17,9 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			vim.lsp.config("lua_ls", {
-        capabilities = capabilities,
+				capabilities = capabilities,
 				cmd = { "lua-language-server" },
 				filetypes = { "lua" },
 				root_markers = {
@@ -35,7 +35,7 @@ return {
 			})
 
 			vim.lsp.config("pyright", {
-        capabilities = capabilities,
+				capabilities = capabilities,
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
 				root_markers = {
@@ -45,23 +45,36 @@ return {
 			})
 
 			vim.lsp.config("clangd", {
-        capabilities = capabilities,
+				capabilities = capabilities,
 				cmd = { "clangd" },
 				filetypes = { "c" },
 				root_markers = {
-					"pyproject.toml",
+					"compile_commands.json",
+					"compile_flags.txt",
 					".git",
 				},
 			})
 
 			vim.lsp.config("gopls", {
-        capabilities = capabilities,
+				capabilities = capabilities,
 				cmd = { "gopls" },
-				filetypes = { "go" },
+				filetypes = { "go", "gomod" },
 				root_markers = {
 					"go.mod",
-          "go.sum",
+					"go.sum",
 					".git",
+				},
+				settings = {
+					gopls = {
+						completeUnimported = true,
+						usePlaceholders = true,
+						staticcheck = true,
+						analyses = {
+							unusedparams = true,
+							nilness = true,
+							shadow = true,
+						},
+					},
 				},
 			})
 
